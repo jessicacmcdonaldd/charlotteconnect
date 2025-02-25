@@ -13,7 +13,7 @@ def home(request):
 #     {'id':3, 'name':'ECON 2101 Spring 2025'},
 # ]
     groups = Group.objects.all()
-    messages = Message.objects.all()
+    messages = Message.objects.all().order_by('-created')
     context = {'groups': groups, 'messages': messages}
     return render(request, 'base/home.html', context)
 
