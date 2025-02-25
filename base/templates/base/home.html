@@ -17,10 +17,25 @@
 
     <div class="general-posts-section">
         <h2>General Posts</h2>
+
+        {% for message in messages %}
+        <p>HELP</p>
         <div class="post">
-            <h3>Example Post Title</h3>
-            <p>This is an example post. Future posts will be displayed here.</p>
+            <h3>
+                {{ message.user.username }} posted 
+                {% if message.group %}
+                    in <a href="{% url 'groups' message.group.id %}">{{ message.group.name }}</a>
+                {% else %}
+                
+                {% endif %}
+            </h3>
+            <p>{{ message.body }}</p>
+            <small>Posted on {{ message.created|date:"F j, Y, g:i a" }}</small>
         </div>
+        {% empty %}
+            <p>No posts yet. Be the first to start a discussion!</p>
+        {% endfor %}
+
     </div>
 </div>
 

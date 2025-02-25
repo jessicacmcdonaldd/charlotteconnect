@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Group
+from .models import Group, Message
 # groups = [
 #     {'id':1, 'name':'ITSC 4155 Spring 2025'},
 #     {'id':2, 'name':'ITCS 3156 Spring 2025'},
@@ -13,7 +13,8 @@ def home(request):
 #     {'id':3, 'name':'ECON 2101 Spring 2025'},
 # ]
     groups = Group.objects.all()
-    context = {'groups': groups}
+    messages = Message.objects.all()
+    context = {'groups': groups, 'messages': messages}
     return render(request, 'base/home.html', context)
 
 def group(request, pk):
