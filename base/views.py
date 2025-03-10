@@ -19,12 +19,15 @@ def home(request):
 
 def group(request, pk):
     group = Group.objects.get(id=pk)
-    context = {'group': group}
+    groups = Group.objects.all()
+    context = {'group': group, 'groups': groups}
     return render(request, 'base/groups.html', context)
 
 def search_results(request):
-    query = request.GET.get('q', '')  # Get the search query from the input field
+    query = request.GET.get('q', '')
+    groups = Group.objects.all()
     return render(request, 'search_results.html', {'query': query})
 
 def login_page(request):
+    groups = Group.objects.all()
     return render(request, 'login.html')

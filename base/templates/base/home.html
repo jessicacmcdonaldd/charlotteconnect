@@ -23,20 +23,15 @@
 
         {% for message in messages %}
         <div class="post">
-            <h3>
-                {{ message.user.username }} posted 
-                {% if message.group %}
-                    in <a href="{% url 'groups' message.group.id %}">{{ message.group.name }}</a>
-                {% else %}
-                
-                {% endif %}
-            </h3>
-            <p>{{ message.body }}</p>
-            <small>Posted on {{ message.created|date:"F j, Y, g:i a" }}</small>
+            <h2 class="post-title">{{ message.title }}</h2> <!-- Title on Top -->
+            <p>{{ message.body }}</p> <!-- Body Stays the Same -->
+            <small>
+                Posted on {{ message.created|date:"F j, Y, g:i a" }} by <strong>{{ message.user.username }}</strong>
+            </small> <!-- Date followed by username -->
         </div>
-        {% empty %}
-            <p>No posts yet. Be the first to start a discussion!</p>
-        {% endfor %}
+    {% empty %}
+        <p>No posts yet. Be the first to start a discussion!</p>
+    {% endfor %}
 
     </div>
 </div>
