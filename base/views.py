@@ -21,3 +21,10 @@ def group(request, pk):
     group = Group.objects.get(id=pk)
     context = {'group': group}
     return render(request, 'base/groups.html', context)
+
+def search_results(request):
+    query = request.GET.get('q', '')  # Get the search query from the input field
+    return render(request, 'search_results.html', {'query': query})
+
+def login_page(request):
+    return render(request, 'login.html')
