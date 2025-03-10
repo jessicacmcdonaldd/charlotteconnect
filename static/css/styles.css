@@ -140,7 +140,7 @@ body {
 } */
 
 /* Course Section */
-.courses {
+/* .courses {
     background: #1e1e1e;
     padding: 15px;
     border-radius: 10px;
@@ -168,6 +168,12 @@ body {
 
 .course-item:hover {
     background: #333333;
+} */
+
+.welcome{
+    padding: 15px;
+    text-align: left;
+    margin-left: 30px;
 }
 
 /* General Posts Section */
@@ -178,6 +184,7 @@ body {
     border-radius: 10px;
     box-shadow: 3px 3px 15px rgba(255, 255, 255, 0.1);
     margin-left: 30px;
+    margin-right: 30px;
 }
 
 .general-posts-section h2 {
