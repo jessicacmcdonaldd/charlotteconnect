@@ -229,6 +229,13 @@ nav ul li a:hover {
     background: #444444;
 }
 
+/* Course Header */
+.course-header {
+    padding: 15px;
+    text-align: left;
+    margin-left: 30px;
+}
+
 /* Footer */
 footer {
     position: fixed;

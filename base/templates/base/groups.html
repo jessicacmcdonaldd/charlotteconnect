@@ -1,6 +1,26 @@
 {% extends 'main.html' %}
 {% block content %}
 
-<h1>{{group.name}}</h1>
+<!-- Course Title -->
+<div class="course-header">
+    <h1>{{ group.name }}</h1>
+</div>
+
+<!-- Posts Section -->
+<div class="general-posts-section">
+    <h2>Posts</h2>
+
+    {% for message in messages %}
+        <div class="post">
+            <h3>
+                {{ message.user.username }} posted
+                <small>on {{ message.created|date:"F j, Y, g:i a" }}</small>
+            </h3>
+            <p>{{ message.body }}</p>
+        </div>
+    {% empty %}
+        <p>No posts in this course yet. Be the first to start a discussion!</p>
+    {% endfor %}
+</div>
 
 {% endblock content %}
