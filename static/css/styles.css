@@ -131,43 +131,10 @@ body {
     max-width: 300px;
 }
 
-/* Title
-.site-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 20px;
-} */
-
-/* Course Section */
-.courses {
-    background: #1e1e1e;
+.welcome{
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.1);
-}
-
-.courses h4 {
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.course-item {
-    background: #2a2a2a;
-    padding: 10px;
-    margin-bottom: 8px;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.course-item h5 a {
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.course-item:hover {
-    background: #333333;
+    text-align: left;
+    margin-left: 30px;
 }
 
 /* General Posts Section */
@@ -178,6 +145,7 @@ body {
     border-radius: 10px;
     box-shadow: 3px 3px 15px rgba(255, 255, 255, 0.1);
     margin-left: 30px;
+    margin-right: 30px;
 }
 
 .general-posts-section h2 {
