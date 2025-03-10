@@ -33,6 +33,24 @@
             </h3>
             <p>{{ message.body }}</p>
             <small>Posted on {{ message.created|date:"F j, Y, g:i a" }}</small>
+
+            <div class="comments-section">
+                <h4>Comments:</h4>
+                {% for comment in comments %}
+                    {% if comment.message == message %}
+                    <div class="comment">
+                        <strong>{{ comment.author.username }}:</strong>
+                        <p>{{ comment.body }}</p>
+                        <small>Posted on {{ comment.created|date:"F j, Y, g:i a" }}</small>
+                    </div>
+                    {% else %}
+                    {% endif %}
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+    
+
         </div>
         {% empty %}
             <p>No posts yet. Be the first to start a discussion!</p>
