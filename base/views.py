@@ -14,14 +14,15 @@ def home(request):
 # ]
     groups = Group.objects.all()
     comments = Comment.objects.all()
-    messages = Message.objects.all().order_by('-created')
+    messages = Message.objects.filter(group__isnull=True).order_by('-created')
     context = {'groups': groups, 'messages': messages, 'comments': comments}
     return render(request, 'base/home.html', context)
 
 def group(request, pk):
     group = Group.objects.get(id=pk)
+    messages = Message.objects.filter(group=group).order_by('-created')
     groups = Group.objects.all()
-    context = {'group': group, 'groups': groups}
+    context = {'group': group, 'messages': messages, 'groups': groups}
     return render(request, 'base/groups.html', context)
 
 def search_results(request):
