@@ -33,3 +33,7 @@ def search_results(request):
 def login_page(request):
     groups = Group.objects.all()
     return render(request, 'login.html')
+
+def registration_page(request):
+    groups = Group.objects.all()
+    return render(request, 'register.html')

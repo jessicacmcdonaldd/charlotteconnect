@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+{% block content %}
+    <h1>REGISTRATION PAGE</h1>
+        // FIX FORM ACTION
+        <form action="models.py" method="post">
+            <div class="registration_container"><br>
+            <hr><br>
+            <label for="username"><b>Username:</b></label>
+            <input type="text" placeholder="Enter Username" name="username" id="username" required><br><br>
+
+            <label for="email"><b>Email:</b></label>
+            <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
+        
+            <label for="password1"><b>Password:</b></label>
+            <input type="password" placeholder="Enter Password" name="password1" id="password1" required><br><br>
+        
+            <label for="password2"><b>Repeat Password:</b></label>
+            <input type="password2" placeholder="Repeat Password" name="password2" id="password2" required><br><br>
+            <hr><br>
+
+            <button type="submit" class="registerbtn">Register</button>
+            </div>
+        </form>
+{% endblock content %}
