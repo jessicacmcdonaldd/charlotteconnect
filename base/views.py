@@ -32,4 +32,4 @@ def search_results(request):
 
 def login_page(request):
     groups = Group.objects.all()
-    return render(request, 'login.html')
+    return render(request, 'base/login.html')
