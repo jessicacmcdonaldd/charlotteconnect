@@ -1,5 +1,8 @@
-from django.shortcuts import render
-from .models import Group, Message, Comment
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Group, Message, Comment, Profile
+from .forms import ProfileForm
+
 # groups = [
 #     {'id':1, 'name':'ITSC 4155 Spring 2025'},
 #     {'id':2, 'name':'ITCS 3156 Spring 2025'},
@@ -33,3 +36,17 @@ def search_results(request):
 def login_page(request):
     groups = Group.objects.all()
     return render(request, 'base/login.html')
+
+@login_required(login_url='login')
+def profile_page(request):
+    groups = Group.objects.all()
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    form = ProfileForm(instance=profile)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+
+    return render(request, 'base/profile.html', {'profile': profile, 'form': form})
