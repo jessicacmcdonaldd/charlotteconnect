@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class = "profile-container">
+    <h1 class = "profile-header">Hello, {{ profile.user.first_name }} {{ profile.user.last_name }}!</h1>
+    <p class = "profile-info"><strong>Bio:</strong> {{ profile.bio }}</p>
+
+    <div class= "profile-courses">
+    <h2>Enrolled Courses</h2>
+    <ul>
+        {% for course in profile.enrolled_courses.all %}
+            <li>{{ course.name }}</li>
+        {% empty %}
+            <li>No enrolled courses</li>
+        {% endfor %}
+    </ul>
+    </div>
+
+    <!-- Edit Button -->
+    <button class="profile-edit-btn" id="edit-profile-btn">Edit Profile</button>
+
+    <!-- Profile Form (Hidden by Default) -->
+    <form class="profile-form" id="profile-form" method="POST" style="display: none;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+        <button type="button" id="cancel-edit">Cancel</button>
+    </form>
+    
+</div>
+    <script>
+        document.getElementById('edit-profile-btn').addEventListener('click', function() {
+            document.getElementById('profile-form').style.display = 'block';  // Show form
+            this.style.display = 'none';  // Hide edit button
+        });
+
+        document.getElementById('cancel-edit').addEventListener('click', function() {
+            document.getElementById('profile-form').style.display = 'none';  // Hide form
+            document.getElementById('edit-profile-btn').style.display = 'block';  // Show edit button
+        });
+    </script>
+{% endblock %}
