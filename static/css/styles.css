@@ -1,8 +1,28 @@
+/*Global Styles */
 * {
     font-family: 'Verdana', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
+    height: 100%;
+  }
+
+  html body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Header */
@@ -120,10 +140,7 @@ nav ul li a:hover {
 }
 
 
-body {
-    background-color: #121212;
-    color: #e0e0e0;
-}
+
 
 /* Left Section */
 .left-section {
@@ -248,3 +265,84 @@ footer {
     padding: 10px 0;
     margin-top: 20px;
 }
+
+/* Login Page */
+
+.new-user-main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(/static/images/UNCC-01.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100%;
+    width: 100%;
+    color: #121212;
+  }
+  
+
+  .new-user-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: transparent;
+    border: 2px solid;
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 2px 4px;
+    border-radius: 10px; 
+  }
+  
+  .new-user-about h1{
+    color: #000 !important ;
+  }
+  
+  .new-user-about h2{
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    padding-left: 1rem;
+    text-align: center;
+  }
+  
+  .new-user-container form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .new-user-container form div{
+    width: 100%;
+    height: 40px;
+    margin: 1rem;
+    
+  }
+  
+  .new-user-container form div input{
+    width: 100%;
+    height: 100%;
+  }
+  
+  .new-user-container form .image{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: .1rem;
+  }
+  
+  .new-user-container form button{
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    border-radius: 30px;
+    color: #000;
+    cursor: pointer;
+  }
+  
+  .new-user-container form button:hover{
+    background-color: var(--clr-grey);
+    color: var(--clr-black);
+  }
+  
