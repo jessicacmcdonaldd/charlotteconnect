@@ -1,3 +1,7 @@
+#Ignore Python cache
 __pycache__/
 db.sqlite3
 *.pyc
+
+#Ignore enviroment files
+.env
