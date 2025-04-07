@@ -35,7 +35,7 @@ def search_results(request):
 
 def login_page(request):
     groups = Group.objects.all()
-    return render(request, 'base/login.html')
+    return render(request, 'base/login.html', {'groups': groups})
 
 @login_required(login_url='login')
 def profile_page(request):
@@ -49,4 +49,4 @@ def profile_page(request):
             form.save()
             return redirect('profile')
 
-    return render(request, 'base/profile.html', {'profile': profile, 'form': form})
+    return render(request, 'base/profile.html', {'profile': profile, 'form': form, 'groups': groups,})
