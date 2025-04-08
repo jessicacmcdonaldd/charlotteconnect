@@ -16,19 +16,35 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 
                 <!-- Courses Dropdown -->
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Courses ▾</a>
-                    <ul class="dropdown-content">
-                        {% for group in groups %}
-                            <li><a href="{% url 'groups' group.id %}">{{ group.name }}</a></li>
-                        {% empty %}
-                            <li><a href="#">No Courses</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Courses ▾</a>
+                        <ul class="dropdown-content">
+                            {% if user_courses %}
+                                {% for group in user_courses %}
+                                    <li><a href="{% url 'groups' group.id %}">{{ group.name }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li><a href="#">No Courses</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}" class="dropbtn">Courses ▾</a>
+                    </li>
+                {% endif %}
 
+
+
+                <!-- profile -->
                 <li><a href="{% url 'profile' %}">Profile</a></li>
-                <li><a href="{% url 'login' %}" class="btn">Login</a></li>
+                <!-- login/logout -->
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="btn">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </div>
