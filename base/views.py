@@ -78,7 +78,7 @@ def search_results(request):
 
 def login_page(request):
     if request.user.is_authenticated:
-        return redirect('profile')  # Redirect if already logged in
+        return redirect('profile') 
 
     if request.method == 'POST':
         username = request.POST.get('username')
