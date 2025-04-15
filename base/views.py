@@ -56,9 +56,11 @@ def home(request):
 def group(request, pk):
     group = Group.objects.get(id=pk)
     messages = Message.objects.filter(group=group).order_by('-created')
+    comments = Comment.objects.filter(message__in=messages).order_by('created')
     groups = Group.objects.all()
     user_courses = get_user_courses(request.user)
-    context = {'group': group, 'messages': messages, 'groups': groups, 'user_courses':user_courses,}
+
+    context = {'group': group, 'messages': messages, 'comments':comments, 'groups': groups, 'user_courses':user_courses,}
     return render(request, 'base/groups.html', context)
 
 #Search Reults
