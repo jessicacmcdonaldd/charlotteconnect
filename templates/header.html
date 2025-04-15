@@ -7,7 +7,7 @@
 
         <!-- Search Bar -->
         <form action="{% url 'search_results' %}" method="GET" class="search-bar">
-            <input type="text" name="q" placeholder="Search..." aria-label="Search">
+            <input type="text" name="q" placeholder="Search..." aria-label="Search" value="{{ request.GET.q}}">
             <button type="submit">🔍</button>
         </form>
 
