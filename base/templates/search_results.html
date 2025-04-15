@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div>
+    <h2>Search Results for "{{ query }}"</h2>
+
+    <div class="general-posts-section">
+    
+        {% if results %}
+        {% for message in results %}
+        <div class="post">
+            <div>
+                <h4>{{ message.title }}</h4>
+                <p>{{ message.body|truncatewords:20 }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+        </div>
+    
+    </div>
+    
+</div>
+
+
+
+{% endblock content %}

@@ -5,6 +5,7 @@ from .forms import ProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
+from django.db.models import Q
 
 # groups = [
 #     {'id':1, 'name':'ITSC 4155 Spring 2025'},
@@ -26,13 +27,31 @@ def home(request):
 #     {'id':2, 'name':'ITCS 3156 Spring 2025'},
 #     {'id':3, 'name':'ECON 2101 Spring 2025'},
 # ]
+
+# Home Page / Search Functionality
+
+    query = request.GET.get("q")
     groups = Group.objects.all()
     comments = Comment.objects.all()
-    messages = Message.objects.filter(group__isnull=True).order_by('-created')
     user_courses = get_user_courses(request.user)
-    context = {'groups': groups, 'messages': messages, 'comments': comments, 'user_courses':user_courses,}
+
+    if query:
+        messages_query = Message.objects.filter(
+            Q(title__icontains=query) | Q(body__icontains=query)
+        ).order_by("-created")
+    else:
+        messages_query = Message.objects.filter(group__isnull=True).order_by("-created")
+
+    context = {
+            'groups': groups, 
+            'messages': messages_query, 
+            'comments': comments, 
+            'user_courses':user_courses,
+        }
 
     return render(request, 'base/home.html', context)
+
+#Groups
 
 def group(request, pk):
     group = Group.objects.get(id=pk)
@@ -42,11 +61,20 @@ def group(request, pk):
     context = {'group': group, 'messages': messages, 'groups': groups, 'user_courses':user_courses,}
     return render(request, 'base/groups.html', context)
 
+#Search Reults
+
 def search_results(request):
     query = request.GET.get('q', '')
-    groups = Group.objects.all()
-    user_courses = get_user_courses(request.user)
-    return render(request, 'search_results.html', {'query': query, 'user_courses':user_courses,})
+    if query:
+        results = Message.objects.filter(
+            Q(title__icontains=query) | Q(body__icontains=query)
+        )
+    else:
+        results = Message.objects.none()
+    
+    return render(request, "search_results.html", {'results':results, "query":query})
+
+# Login Page
 
 def login_page(request):
     if request.user.is_authenticated:
@@ -67,6 +95,7 @@ def login_page(request):
     groups = Group.objects.all()
     return render(request, 'base/login.html', {'groups': groups})
 
+# Login Authentication
 
 @login_required(login_url='login')
 def profile_page(request):
