@@ -10,5 +10,7 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('profile', profile_page, name='profile'),
     path('logout/', views.logout_view, name='logout'),
-
+    path('post/create/', views.create_post, name='create_post'),
+    path('post/create/<int:group_id>/', views.create_post, name='create_group_post'),
+    
 ]

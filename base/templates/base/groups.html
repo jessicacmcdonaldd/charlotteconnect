@@ -4,7 +4,25 @@
 <!-- Course Title -->
 <div class="course-header">
     <h1>{{ group.name }}</h1>
+
+    <button class="group-create" onclick="openModal()">Create Post in {{ group.name }}</button>
+
+    <!-- Modal -->
+    <div id="postModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="postForm" method="POST">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Title" required><br>
+                <textarea name="body" placeholder="Write your post..." required></textarea><br>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+
+
 
 <!-- Posts Section -->
 <div class="general-posts-section">
@@ -40,6 +58,36 @@
     {% empty %}
         <p>No posts yet. Be the first to start a discussion!</p>
     {% endfor %}
+
 </div>
+<script>
+    function openModal() {
+        document.getElementById("postModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("postModal").style.display = "none";
+    }
+
+    document.getElementById("postForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch("{% url 'create_group_post' group.id %}", {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: formData
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Error posting!");
+            }
+        });
+    });
+</script>
 
 {% endblock content %}

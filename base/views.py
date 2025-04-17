@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Group, Message, Comment, Profile
-from .forms import ProfileForm
+from .forms import ProfileForm, MessageForm
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.db.models import Q
+from django.http import JsonResponse
 
 # groups = [
 #     {'id':1, 'name':'ITSC 4155 Spring 2025'},
@@ -117,3 +118,16 @@ def profile_page(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+# Login required for user to create a post
+def create_post(request, group_id=None):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.user = request.user
+            if group_id:
+                message.group = Group.objects.get(id=group_id)
+            message.save()
+            return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
