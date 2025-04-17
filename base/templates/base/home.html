@@ -18,13 +18,28 @@
         </div> -->
     <!-- </div> -->
 
+
+    <!-- Create Post -->
+    <button onclick="openModal()">Create Post</button>
+    <div id="postModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="postForm" method="POST">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Title" required><br>
+                <textarea name="body" placeholder="Write your post..." required></textarea><br>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+    </div>
+
     <div class="general-posts-section">
         <h2>Posts</h2>
 
         {% for message in messages %}
         <div class="post">
             <h2 class="post-title">{{ message.title }}</h2> <!-- Title on Top -->
-            <p>{{ message.body }}</p> <!-- Body Stays the Same -->
+            <p>{{ message.body }}</p> 
             <small>
                 Posted on {{ message.created|date:"F j, Y, g:i a" }} by <strong>{{ message.user.username }}</strong>
             </small> <!-- Date followed by username -->
@@ -52,7 +67,38 @@
         <p>No posts yet. Be the first to start a discussion!</p>
     {% endfor %}
     </div>
+
+    
     
 </div>
+<script>
+    function openModal() {
+        document.getElementById("postModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("postModal").style.display = "none";
+    }
+
+    document.getElementById("postForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch("{% url 'create_post' %}", {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: formData
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Error posting!");
+            }
+        });
+    });
+</script>
 
 {% endblock content %}
