@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Group, Message, Comment, Profile
 from .forms import ProfileForm
@@ -56,11 +56,9 @@ def home(request):
 def group(request, pk):
     group = Group.objects.get(id=pk)
     messages = Message.objects.filter(group=group).order_by('-created')
-    comments = Comment.objects.filter(message__in=messages).order_by('created')
     groups = Group.objects.all()
     user_courses = get_user_courses(request.user)
-
-    context = {'group': group, 'messages': messages, 'comments':comments, 'groups': groups, 'user_courses':user_courses,}
+    context = {'group': group, 'messages': messages, 'groups': groups, 'user_courses':user_courses,}
     return render(request, 'base/groups.html', context)
 
 #Search Reults
@@ -117,3 +115,15 @@ def profile_page(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def post_view(request, post_id):
+    message = get_object_or_404(Message, pk=post_id)
+    comments = Comment.objects.filter(message=message)
+
+    context = {
+        'group': group,
+        'message': message,
+        'comments': comments,
+    }
+
+    return render(request, 'post_view.html', context)

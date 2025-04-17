@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('profile', profile_page, name='profile'),
     path('logout/', views.logout_view, name='logout'),
-
+    path('posts/<int:post_id>/', views.post_view, name='post_view'),
 ]
