@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="course-header">
+    <h1>{{ message.title }}</h1>
+</div>
+
+<div class="general-posts-section">
+    <h3>{{ message.body }}</h3>
+    <small>Posted on {{ message.created|date:"F j, Y, g:i a" }} by <strong>{{ message.user.username }}</strong></small>
+    
+    <br><br>    
+    <div class="post-title">
+        <p><strong>Comments:</strong></p>
+        <div class="post">
+            {% for comment in comments %}
+                <p><strong>{{ comment.author.username }}:</strong> {{ comment.body }}</p><br>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

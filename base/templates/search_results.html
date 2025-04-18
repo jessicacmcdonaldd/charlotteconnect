@@ -10,7 +10,11 @@
         {% for message in results %}
         <div class="post">
             <div>
-                <h4>{{ message.title }}</h4>
+                <h4>
+                    <a href="{% url 'post_view' message.pk %}" style="color:white; text-decoration:underline;">
+                        {{ message.title }}
+                    </a>
+                </h4>
                 <p>{{ message.body|truncatewords:20 }}</p>
             </div>
         {% endfor %}
