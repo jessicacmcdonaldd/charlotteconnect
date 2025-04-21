@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from .models import Group, Message, Comment
+from django.shortcuts import render, redirect
+from .models import Group, Message, Comment, SignUpForm
+from django.contrib import messages
+
 # groups = [
 #     {'id':1, 'name':'ITSC 4155 Spring 2025'},
 #     {'id':2, 'name':'ITCS 3156 Spring 2025'},
@@ -35,5 +37,12 @@ def login_page(request):
     return render(request, 'login.html')
 
 def registration_page(request):
-    groups = Group.objects.all()
-    return render(request, 'register.html')
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registration successful. You can now log in.')
+            return redirect('login')  # You can change this to your desired route
+    else:
+        form = SignUpForm()
+    return render(request, 'register.html', {'form': form})

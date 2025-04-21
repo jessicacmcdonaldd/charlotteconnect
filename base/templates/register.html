@@ -1,24 +1,37 @@
 {% extends 'main.html' %}
 {% block content %}
     <h1>REGISTRATION PAGE</h1>
-        // FIX FORM ACTION
-        <form action="models.py" method="post">
-            <div class="registration_container"><br>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="registration_container"><br>
             <hr><br>
-            <label for="username"><b>Username:</b></label>
-            <input type="text" placeholder="Enter Username" name="username" id="username" required><br><br>
-
-            <label for="email"><b>Email:</b></label>
-            <input type="text" placeholder="Enter Email" name="email" id="email" required><br><br>
-        
-            <label for="password1"><b>Password:</b></label>
-            <input type="password" placeholder="Enter Password" name="password1" id="password1" required><br><br>
-        
-            <label for="password2"><b>Repeat Password:</b></label>
-            <input type="password2" placeholder="Repeat Password" name="password2" id="password2" required><br><br>
-            <hr><br>
-
-            <button type="submit" class="registerbtn">Register</button>
+    
+            <div class="form-errors" style="color: red;">
+                {% for field in form %}
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
-        </form>
+    
+            <label for="username"><b>Username:</b></label>
+            <input type="text" name="username" placeholder="Enter Username" id="username" value="{{ form.username.value|default:'' }}" required><br><br>
+    
+            <label for="email"><b>Email:</b></label>
+            <input type="email" name="email" placeholder="Enter Email" id="email" value="{{ form.email.value|default:'' }}" required><br><br>
+    
+            <label for="password1"><b>Password:</b></label>
+            <input type="password" name="password1" placeholder="Enter Password" id="password1" required><br><br>
+    
+            <label for="password2"><b>Repeat Password:</b></label>
+            <input type="password" name="password2" placeholder="Repeat Password" id="password2" required><br><br>
+    
+            <hr><br>
+            <button type="submit" class="registerbtn">Register</button>
+        </div>
+    </form>
 {% endblock content %}
