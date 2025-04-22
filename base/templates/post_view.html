@@ -1,6 +1,29 @@
 {% extends 'main.html' %}
 {% block content %}
-
+<style>
+    .modal {
+        position: fixed;
+        z-index: 999;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .modal-content {
+        background: black;
+        padding: 20px;
+        width: 60%;
+        margin: 10% auto;
+        border-radius: 8px;
+    }
+    
+    .close {
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+    }
+</style>
+    
 <div class="course-header">
     <h1>{{ message.title }}</h1>
 </div>
@@ -10,16 +33,83 @@
     <small>Posted on {{ message.created|date:"F j, Y, g:i a" }} by <strong>{{ message.user.username }}</strong></small>
     
     <br><br>    
-    <div class="post-title">
-        <p><strong>Comments:</strong></p>
-        <div class="post">
+    <!-- Comments Section Trigger -->
+<div class="post-title">
+    <p><strong>Comments:</strong></p>
+    <div class="post" onclick="openCommentsModal()" style="cursor:pointer;">
+        {% for comment in comments %}
+            <p><strong>{{ comment.author.username }}:</strong> {{ comment.body|truncatewords:10 }}</p><br>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Comments Modal -->
+<div id="commentsModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeCommentsModal()">&times;</span>
+        
+        <h3>Comments</h3>
+        <div id="commentsList">
             {% for comment in comments %}
-                <p><strong>{{ comment.author.username }}:</strong> {{ comment.body }}</p><br>
+                <div class="comment">
+                    <p><strong>{{ comment.author.username }}:</strong> {{ comment.body }}</p>
+                    <small>{{ comment.created|date:"F j, Y, g:i a" }}</small>
+                    <hr>
+                </div>
             {% empty %}
                 <p>No comments yet.</p>
             {% endfor %}
         </div>
+
+        {% if request.user.is_authenticated %}
+        <form id="commentForm" method="POST">
+            {% csrf_token %}
+            <textarea name="comment_body" placeholder="Write your comment..." required></textarea><br>
+            <button type="submit">Post Comment</button>
+        </form>
+        {% else %}
+        <p><a href="{% url 'login' %}">Login</a> to post a comment.</p>
+        {% endif %}
     </div>
 </div>
+
+</div>
+
+
+
+<script>
+    function openCommentsModal() {
+        document.getElementById("commentsModal").style.display = "block";
+    }
+
+    function closeCommentsModal() {
+        document.getElementById("commentsModal").style.display = "none";
+    }
+
+    // Handle comment form submission
+    document.getElementById("commentForm")?.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch("{% url 'post_comment' message.id %}", {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            },
+            body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Error posting comment");
+            }
+        });
+    });
+</script>
+
 
 {% endblock content %}

@@ -7,6 +7,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # groups = [
 #     {'id':1, 'name':'ITSC 4155 Spring 2025'},
@@ -135,13 +136,32 @@ def create_post(request, group_id=None):
 # View posts
 
 def post_view(request, post_id):
+    groups = Group.objects.all()
     message = get_object_or_404(Message, pk=post_id)
     comments = Comment.objects.filter(message=message)
+    user_courses = get_user_courses(request.user)
 
     context = {
-        'group': group,
         'message': message,
         'comments': comments,
+        'groups': groups,
+        'user_courses':user_courses,
     }
 
     return render(request, 'post_view.html', context)
+
+@csrf_exempt
+@login_required
+def post_comment(request, post_id):
+    if request.method == "POST":
+        message = get_object_or_404(Message, pk=post_id)
+        body = request.POST.get("comment_body", "").strip()
+        if body:
+            Comment.objects.create(
+                message=message,
+                author=request.user,
+                group=message.group,
+                body=body
+            )
+            return JsonResponse({"success": True})
+    return JsonResponse({"success": False}, status=400)
