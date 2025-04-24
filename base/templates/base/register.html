@@ -1,0 +1,19 @@
+{% extends 'main.html' %}
+{% block content %}
+<main class="new-user-main">
+    <div class="new-user-container">
+        <div class="new-user-about">
+            <h1>Create Account</h1>
+            <h2>Join the community</h2>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+</main>
+{% endblock content %}
