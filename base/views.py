@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Group, Message, Comment, Profile
-from .forms import ProfileForm, MessageForm
+from .forms import ProfileForm, MessageForm, CustomUserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
@@ -165,3 +165,27 @@ def post_comment(request, post_id):
             )
             return JsonResponse({"success": True})
     return JsonResponse({"success": False}, status=400)
+
+def register_page(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
+
+    form = CustomUserCreationForm()
+
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.save()
+
+            profile = Profile.objects.create(user=user)
+            enrolled_courses = form.cleaned_data.get('enrolled_courses')
+            profile.enrolled_courses.set(enrolled_courses)
+
+            login(request, user)
+            return redirect('profile')
+
+    groups = Group.objects.all()
+    return render(request, 'base/register.html', {'form': form, 'groups': groups})
